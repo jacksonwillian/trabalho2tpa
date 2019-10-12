@@ -1,7 +1,5 @@
 # Trabalho2tpa
-Trabalho 2 TPA - Ordenação
-
-## Desenvolvido em Python Versão 3
+Trabalho 2 TPA - Algoritmo de ordenação desenvolvido em Python Versão 3
 
 ## Aplicação
 
