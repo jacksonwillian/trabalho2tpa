@@ -5,7 +5,7 @@ Trabalho 2 TPA - Algoritmo de ordenação desenvolvido em Python Versão 3
 
 #### Linha de comando da Aplicação
 	
-	python main.py _id_funcao_ordenacao_ id_funcao_comparacao arquivo_entrada arquivo_saida
+python main.py _id_funcao_ordenacao_ _id_funcao_comparacao_ _arquivo_entrada_ _arquivo_saida_
 
 #### Argumentos da Aplicação
 
