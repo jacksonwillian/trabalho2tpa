@@ -17,7 +17,7 @@ Trabalho 2 TPA - Algoritmo de ordenação desenvolvido em Python Versão 3
 	
  - `arquivo_saida` é o diretório onde vai salvar o arquivo csv ordenado;
 
-## Algoritmos de Ordenação Implementados
+## Algoritmos de Ordenação
 
 - heapsort.py
 - insertsort.py
