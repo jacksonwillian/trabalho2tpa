@@ -3,11 +3,11 @@ Trabalho 2 TPA - Algoritmo de ordenação desenvolvido em Python Versão 3
 
 ## Aplicação: main.py
 
-#### Linha de comando da Aplicação
+#### Linha de comando
 
 	python main.py id_funcao_ordenacao id_funcao_comparacao arquivo_entrada arquivo_saida
 
-#### Argumentos da Aplicação
+#### Argumentos
 
  - `id_funcao_ordenacao` pode ser um desses 'selectsort', 'quicksort', 'heapsort', 'insertsort';
 
@@ -26,6 +26,3 @@ Trabalho 2 TPA - Algoritmo de ordenação desenvolvido em Python Versão 3
 - mergesort.py
 - <>
 - <>
-
-
-
