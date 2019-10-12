@@ -71,7 +71,7 @@ def main(args):
 			arq_carregado = f_read_csv(args[2])
 			tam_lst = len(arq_carregado[1])
 
-			print("Ordenando os dados... ( 'Ctrl + C' p/ terminar a execução )")
+			print("Ordenando os dados...  ['Ctrl + C' p/ terminar]")
 
 			# PEGAR TEMPO INICIAL
 			tempo_inicial = 1
@@ -81,7 +81,10 @@ def main(args):
 				f_ordenar( arq_carregado[1], args[0], args[1], posicao)
 
 			except Exception as e:
-				print ("ERRO | {} ".format(e))
+				print ("ERRO | A execução foi interrompido {} ".format(e))
+
+			except KeyboardInterrupt as e:
+				print ("A execução foi interrompida!")
 
 			finally:
 
