@@ -1,0 +1,5 @@
+# Ignorar a pasta __pycache__
+algoritmo/__pycache__
+
+# Ignorar todos os arquivos com extensão .csv
+*.csv

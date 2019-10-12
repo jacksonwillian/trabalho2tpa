@@ -1,0 +1,5 @@
+# Ignorar aquivos Latex 
+*.aux
+*.out
+*.gz
+*.log
