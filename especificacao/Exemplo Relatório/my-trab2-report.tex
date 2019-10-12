@@ -1,0 +1,671 @@
+\documentclass[a4paper,12pt]{scrartcl}
+
+\usepackage[margin=25mm,bottom=30mm]{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage[brazil]{babel}
+\usepackage[pdftex]{hyperref}
+\usepackage[normalem]{ulem}
+\usepackage{xfrac}
+\usepackage{minted}
+\usepackage{csvsimple}
+\usepackage{siunitx}
+
+
+\title{Relatório do Trabalho de Ordenação e Estatísticas de Ordem}
+\subtitle{Técnicas de Programação Avançada --- Ifes --- Campus Serra}
+\author{\uline{Aluno: INSIRA O NOME DO ALUNO}%
+  \and Prof. Jefferson O. Andrade}
+\date{29 de setembro de 2018}
+
+
+% Define o texto em português que será impresso pelo ambiente `listing', e pelo
+% comando `\listoflistings'. Infelizmente o pacote babel não inclui estas
+% traduções.
+\renewcommand{\listingscaption}{Código Fonte}
+\renewcommand{\listoflistingscaption}{Lista de Códigos Fonte}
+
+% Comando necessário para que o `autoref' funcione corretamente para listagens
+% de códigos fonte, i.e., para o ambiente `listing'.
+\providecommand*{\listingautorefname}{Código Fonte}
+
+
+%%% ============================================================================
+%%% ============================================================================
+\begin{document}
+
+\maketitle
+
+\tableofcontents
+
+\listoflistings
+
+\listoffigures
+
+
+\section{Introdução}
+\label{sec:introducao}
+
+Este documento tem o propósito duplo de servir de modelo para confecção do
+relatório que deve ser entregue como parte do Trabalho de Ordenação e
+Estatísticas de Ordem da disciplina de Técnicas de Programação Avançada, e
+também de descrever dois algoritmos de ordenação não discutidos em sala de aula.
+
+
+\subsection{Ambiente de Desenvolvimento}
+\label{sec:amb-desenv}
+
+Para o desenvolvimento do trabalho foi utilizada a linguagem Scala, e para
+automação de algumas das atividades de preparação de dados foram utilizados
+scripts do interpretador de comandos (shell) Bash.
+
+Para edição do código fonte foi utilizado o editor de textos
+\href{https://www.gnu.org/software/emacs/}{GNU Emacs}, com a distribuição
+\href{http://spacemacs.org/}{Spacemacs}. Para suporte ao desenvolvimento de
+código em Scala foi utilizado o \emph{plug-in}
+\href{https://ensime.github.io/}{ENSIME}, do Emacs, que acrescenta
+características típicas de um ambiente integrado de desenvolvimento.
+
+
+\section{Geração de Dados para Testes}
+\label{sec:geracao-de-dados}
+
+Originalmente, pretendia-se utilizar um sistema online de geração de dos
+aleatórios para testes. Entretanto, todos os sistemas online gratuitos
+encontrados tinham severas limitações de número de registros que poderiam ser
+criados. Tipicamente limitando este número em 500 registros ou menos. Como seria
+necessária a geração de arquivos com mais de 1 milhão de registros para os
+testes dos algoritmos de ordenação, a opção de utilizar um sistemas online ficou
+inviabilizada.
+
+Deste modo, foi desenvolvido um programa específico para geração dos dados para
+teste dos algoritmos de ordenação. Este programa foi desenvolvido na linguagem
+Scala, e é um programa relativamente simples.
+
+
+\subsection{Programa para Geração de Dados}
+
+O programa desenvolvido foi chamado de \textsf{Mokata}, que é um amálgama entre
+as palavras em ingês \emph{mock} e \emph{data}. A versão atual do
+\textsf{Mokata} (versão 0.1.0) foi desenvolvida especificamente para gerar os
+dados para este trabalho, o que levou a um programa pouco flexível e com
+diversas decisões tomadas arbitrariamente e expressa de modo fixo em código,
+i.e., \emph{hard-coded}. Espera-se que o \textsf{Mokata} evolua para,
+eventualmente, poder ser usado para geração de dados aleatórios de testes para
+uma grande variedade de programas, podendo ser configurado para gerar uma
+quantidade variável de campos, e uma grande variedade de tipos diferentes de
+campos de dados, de modo consistente. Por exemplo, mantendo consistência entre
+nome e gênero, ou entre nome e e-mail.
+
+O programa \textsf{Mokata} recebe dois argumentos obrigatórios, o número de
+registros que devem ser gerado e o nome do arquivo de saída onde os registros
+devem ser gravados, e um argumento opcional, a semente aleatória que será usada
+para a geração dos dados. Se a semente não for especificada, o valor padrão
+$12345$ será utilizado.
+
+\begin{listing}[h]
+\begin{minted}[autogobble,breaklines,linenos,fontsize=\small]{scala}
+  def genMockData(config: Config) {
+    val writer = CSVWriter.open(config.outputFile)
+    val header = List("email", "gender", "uid", "birthdate", "height", "weight")
+    writer.writeRow(header)
+
+    var uidSet: TreeSet[Long] = TreeSet.empty
+    for (i <- 1 to config.recordCount) {
+      val row = genMockRow(uidSet)
+      writer.writeRow(row)
+    }
+    writer.close()
+  }
+\end{minted}
+\caption[Função de geração do arquivo de dados.]{Função com o loop principal
+  que gera o arquivo de dados do programa \textsf{Mokata}.}
+\label{lst:genmockdata}
+\end{listing}
+
+O~\autoref{lst:genmockdata} mostra a função contendo o loop principal do
+programa \textsf{Mokata} que gera as linhas de dados individualmente e as grava
+no arquivo de saída. A função \mintinline{scala}{genMockData} recebe os
+argumentos de configuração do programa através do parâmetro \texttt{config}.
+
+\begin{listing}[h]
+\begin{minted}[autogobble,breaklines,linenos,fontsize=\small]{scala}
+  def genMockRow(uidSet: TreeSet[Long]): List[String] = {
+    val email = genMockEmail
+    val gender = genMockGender
+    val uid = genMockUserId(uidSet)
+    val bdate = genMockBirthdate.toString
+    val height = genMockHeight(175, 15)
+    val weight = genMockWeight(height)
+    val row = List(email, gender, uid, bdate, height.toString, round(weight).toString)
+  }
+\end{minted}
+\caption{Função que gera cada linha individual de dados.}
+\label{lst:genmockrow}
+\end{listing}
+
+O~\autoref{lst:genmockrow} mostra a função que gera as linhas de dados
+individuais. Note que existe uma \emph{dependência funcional estatística} entre
+altura e peso. A função \mintinline{scala}{genMockWeight} recebe a altura como
+parâmetro, juntamente com um indicador de desvio padrão para o peso. O peso é
+calculado aleatoriamente, porém com base em uma distribuição probabilística
+gaussiana com centro no \emph{Índice de Massa Corporal} (BMI) 25 e desvio padrão
+de acordo com o indicado como parâmetro. Outras dependências deverão ser criadas
+em futuras versões do programa, à medida que novos tipos de campos forem
+acrescentados à ele.
+
+
+\subsection{Bibliotecas Externas e Build}
+
+Para a análise e processamento dos argumentos de linha de comando foi utilizado
+a biblioteca \href{https://github.com/scopt/scopt}{scopt}. Esta biblioteca foi
+escolhida fundamentalmente por sua simplicidade de uso. Embora haja bibliotecas
+mais sofisticadas, estas exigiam maior tempo de estudo para o aprendizado, e os
+recursos adicionais oferecidos não seriam necessários para o que tínhamos em
+mente.
+
+De modo semelhante, a escolha da biblioteca utilizada para a gravação dos
+arquivos CSV foi feita baseada na simplicidade de uso. A biblioteca escolhida
+foi a \href{https://github.com/tototoshi/scala-csv}{scala-csv}. Esta biblioteca
+define um \emph{reader} e um \emph{writer} para arquivos CSV que retornam listas
+de \emph{strings} e gravam listas de \emph{strings}, respectivamente. Embora a
+biblioteca não ofereça muito, é o suficiente para as necessidades do
+\textsf{Mokata} e o tempo de aprendizado é extremamente curto -- a página da
+biblioteca no GitHut apresenta um conjunto de exemplos que permite saber o
+necessário para utilizá-la em menos de 5 minutos.
+
+\begin{listing}[h]
+\begin{minted}[autogobble,breaklines,linenos,fontsize=\small]{scala}
+lazy val root = (project in file("."))
+  .settings(
+    name := "Mokata",
+    version := "0.1.0",
+    scalaVersion := "2.12.6",
+    libraryDependencies += "com.github.scopt" %% "scopt" % "3.7.0",
+    libraryDependencies += "com.github.tototoshi" %% "scala-csv" % "1.3.5"
+  )
+\end{minted}
+\caption{Arquivo de configuração do projeto \textsf{Mokata} no sbt.}
+\label{lst:mokata-build-sbt}
+\end{listing}
+
+Para o processo de \emph{build} foi utilizada a ferramenta
+\href{https://www.scala-sbt.org/}{sbt}. O~\autoref{lst:mokata-build-sbt} mostra
+o arquivo de configuração da ferramenta sbt para o projeto \emph{Mokata},
+permitindo ver a configuração para inclusão das bibliotecas scopt e scala-csv.
+
+O sbt também é necessário para integração do \emph{plug-in} ENSIME ao editor
+Emacs, visto que o arquivo de configuração do ENSIME é gerado pelo comando
+\emph{ensimeConfig} acrescentado ao sbt através de um \emph{plug-in} do sbt
+desenvolvido pela equipe do ENSIME.
+
+O processo padrão de ``\emph{packaging}'' do sbt gera um arquivo JAR que pode
+ser executado no \emph{Java Virtual Machine} (JVM), porém com dependência. Para
+que esse arquivo JAR seja executado pela JVM é necessário indicar no
+\emph{classpath} o arquivo JAR com a biblioteca padrão da linguagem Scala, bem
+como os arquivos JAR com as bibliotecas de terceiros (neste caso a scopt e a
+scala-csv). Esse processo é inconveniente. Para reduzir essa inconveniência, foi
+usado o \emph{plug-in} \href{https://github.com/sbt/sbt-assembly}{sbt-assembly}.
+Este \emph{plug-in} cria arquivos JAR que já contém todas as dependências do
+projeto, eliminando a necessidade do usuário ter que baixar essas dependências e
+especificá-las como parâmetros, ou na variável de ambiente CLASSPATH.
+
+
+\subsection{Geração dos Arquivos de Dados}
+
+Para automatizar o processo de geração dos arquivos de dados foi gerado um
+script do interpretador de comandos Bash. O código fonte deste script é mostrado
+como apêndice na~\autoref{lst:mkdata}.
+
+O script da~\autoref{lst:mkdata}, gravado no arquivo \texttt{mkdata.sh}, define
+três listas: \texttt{PRIMES}, \texttt{SIZES}, e \texttt{NAMES}. A lista
+\texttt{PRIMES} contém números primos de 5 dígitos que serão usados como semente
+de geração de números randômicos pelo programa \textsf{Mokata}. A lista foi
+obtida no site
+\href{https://primes.utm.edu/curios/index.php?start=5&stop=5}{Prime Curious}. A
+lista \texttt{SIZES} contém o tamanho (número de registro) dos arquivos de serão
+gerados, e a lista \texttt{NAMES} contém uma lista de identificadores que serão
+utilizados para compor o nome dos arquivos que serão gerados. É necessário que a
+lista \texttt{PRIMES} e a lista \texttt{NAMES} tenham pelo menos a mesma
+quantidade de elementos da lista \texttt{SIZES}. Caso contrário, ocorrerá um
+erro na execução do script.
+
+
+
+%%% ============================================================================
+\section{Implementação do Trabalho}
+
+Como dito anteriormente, o trabalho foi implementado na linguagem Scala,
+utilizando o sistema de \emph{build} sbt, e Emacs/ENSIME como ambiente de
+desenvolvimento. O projeto consiste de apenas três arquivos:
+
+\begin{itemize}
+\item \texttt{MySort.scala} -- Contém o código para o programa principal.
+\item \texttt{Sorting.scala} -- Contém a implementação dos algoritmos de
+  ordenação.
+\item \texttt{Utils.scala} -- Contém a implementação da função que conta o
+  número de linhas de um arquivo.
+\end{itemize}
+
+
+\subsection{Programa Principal}
+
+O programa principal é responsável por processar os argumentos de linha de
+comando, ler os dados do arquivo CSV de entrada, executar o algoritmo de
+ordenação, coletar o tempo de execução do algoritmo de ordenação, e gravar os
+dados ordenados no arquivo CSV de saída. 
+
+\begin{listing}[h]
+\begin{minted}[autogobble,breaklines,linenos,fontsize=\small]{scala}
+  def run(config: Config): Unit = {
+    validateConfig(config);
+
+    val persons = loadInputFile(config.inputFile)
+
+    val sortInitTime = System.nanoTime()
+    config.algorithmId match {
+      case "shell" => Sorting.shellsort(persons)
+      case "comb" => Sorting.combsort(persons)
+      case _ => throw new RuntimeException(
+        s"Error! Invalid algorithm id: ${config.algorithmId}")
+    }
+    val sortFinishTime = System.nanoTime()
+
+    writeOutputFile(config.outputFile, persons)
+    reportTime(config.algorithmId, persons.size, sortFinishTime - sortInitTime)
+  }
+\end{minted}
+\caption{Função principal do programa \textsf{MySort}.}
+\label{lst:mysort-run}
+\end{listing}
+
+O~\autoref{lst:mysort-run} mostra a função principal do programa
+\textsf{MySort}. Optamos por seguir a arquitetura proposta no Algoritmo 2 do
+enunciado do trabalho, ou seja, ter um único programa principal que recebe como
+parâmetro qual algoritmo de ordenação deve ser aplicado. É possível ver nas
+linhas de 7 a 12 do~\autoref{lst:mysort-run} que o campo \texttt{algorithmId} da
+configuração do programa é usado para selecionar o algoritmo.
+
+\begin{listing}[h]
+\begin{minted}[autogobble,breaklines,linenos,fontsize=\small]{scala}
+  def loadInputFile(inputFile: File): Array[Person] = {
+    val numLines = Utils.countLines(inputFile)
+    val persons = new Array[Person](numLines - 1)
+    val reader = CSVReader.open(inputFile)
+    reader.readNext()
+    var i = 0
+    reader foreach {fields => persons(i) = Person.fromList(fields); i += 1}
+    reader.close()
+    persons
+  }
+\end{minted}
+\caption{Função que faz a leitura dos registros do arquivo de entrada.}
+\label{lst:mysort-load-input}
+\end{listing}
+
+A função \mintinline{scala}{loadInputFile}, merece um comentário à parte. Uma
+forma relativamente simples de fazer a leitura do arquivo de entrada seria
+construir uma lista simplesmente encadeada à medida que fôssemos lendo os
+registros e, ao final, retornar esta lista. Entretanto, precisamos de um vetor
+para passar aos algoritmos de ordenação, então as listas teriam que ser
+convertidas em vetores. Eta foi nossa primeira abordagem. Porém esta abordagem
+estava causando um erro de exaustão de memória com o arquivo de 5 milhões de
+registros. Em virtude disso, foi necessário mudar de estratégia, e passamos a
+utilizar uma função que conta o número de linhas do arquivo, então alocamos o
+vetor já com seu tamanho total e em seguida passamos a ler os registros e
+armazená-los já diretamente no vetor. O~\autoref{lst:mysort-load-input}
+apresenta a função que faz a leitura dos arquivos de entrada.
+
+
+\subsection{Estruturas de Dados}
+\label{sec:estruturas-de-dados}
+
+Para modelar os dados que o programa deve manipular foi definida uma estrutura
+de dados, ou uma \emph{case class} na terminologia de Scala, chamada
+\mintinline{scala}{Person}. Esta estrutura de dados é composta por seis campos,
+correspondentes as colunas dos arquivos CSV de entrada.
+
+\begin{listing}[h]
+\begin{minted}[autogobble,breaklines,linenos,fontsize=\small]{scala}
+  case class Person(uid: String, email: String, gender: Char,
+                    birthdate: LocalDate, height: Int, weight: Int)
+  {
+    def toList: List[String] = {
+      List(email,
+           gender.toString,
+           uid,
+           birthdate.toString,
+           height.toString,
+           weight.toString)
+    }
+  }
+\end{minted}
+\caption{Definição da estrutura de dados \texttt{Person}.}
+\label{lst:person}
+\end{listing}
+
+O~\autoref{lst:person} apresenta a definição do tipo \mintinline{scala}{Person}.
+Note que também foi definida para valores este tipo uma operação (método)
+chamada \mintinline{scala}{toList} que converte o objeto uma lista de strings
+correspondente. Esta operação será utilizada para gravação dos dados no arquivo
+de saída.
+
+\begin{listing}[h]
+\begin{minted}[autogobble,breaklines,linenos,fontsize=\small]{scala}
+  object Person {
+    def fromList(fields: Seq[String]): Person = {
+      val email = fields(0)
+      val gender = fields(1).charAt(0)
+      val uid = fields(2)
+      val birthdate = LocalDate.parse(fields(3))
+      val height = fields(4).toInt
+      val weight = fields(5).toInt
+      Person(uid, email, gender, birthdate, height, weight)
+    }
+  }
+\end{minted}
+\caption{Objeto companheiro da classe \texttt{Person}, que define a operação
+\texttt{fromList}.}
+\label{lst:person-obj}
+\end{listing}
+
+O~\autoref{lst:person-obj} apresenta a definição do \emph{objeto companheiro}
+(\emph{companion object}) da classe \mintinline{scala}{Person}. Esse objeto
+define uma função chamada \mintinline{scala}{fromList} que realiza a operação
+inversa da função \mintinline{scala}{toList}, i.e., recebe uma lista de strings
+e constrói um objeto do tipo \mintinline{scala}{Person} à partir dos valores da
+lista.
+
+\begin{listing}[h]
+\begin{minted}[autogobble,breaklines,linenos,fontsize=\small]{scala}
+  implicit val ordPerson: Ordering[Person] = new Ordering[Person]() {
+    def compare(x: Person, y: Person): Int = x.uid.compare(y.uid)
+  }
+\end{minted}
+\caption[Declaração implícita de \texttt{Ordering[Person]}.]{Definição do valor
+implícito do tipo \mintinline{scala}{Ordering[Person]} que será usado como forma
+padrão de comparação entre dois valores do tipo \mintinline{scala}{Person}.}
+\label{lst:ordering-person}
+\end{listing}
+
+O~\autoref{lst:ordering-person} apresenta a definição de um valor implícito do
+tipo \mintinline{scala}{Ordering[Person]}. Esta interface define uma função de
+comparação que será usada como padrão toda vez que uma operação qualquer definir
+um parâmetro deste tipo como implícito. Os algoritmos de ordenação implementados
+neste trabalho utilizaram esta estratégia, i.e., definiram parâmetros implícitos
+do tipo \mintinline{scala}{Ordering[T]}, de modo que ao chamar as funções de
+ordenação não é necessário passar explicitamente o objeto que faz a comparação.
+
+
+\subsection{Algoritmos de Ordenação}
+\label{sec:algor-ordenacao}
+
+O Trabalho de Ordenação e Estatísticas de Ordem pede a implementação de cinco
+algoritmos de ordenação diferentes. A saber: ordenação por seleção
+(\emph{selection sort}), ordenação por inserção (\emph{insertion sort}),
+\emph{merge sort}, \emph{quicksort}, e \emph{heapsort}.
+
+Neste exemplo de relatório, entretanto, foram implementados dois outros
+algoritmos que não estão na lista pedida. Para não estragar a diversão dos
+alunos durante a implementação.
+
+Os algoritmos implementados são o \emph{Shell sort} e o \emph{Comb sort}, ambos
+podem ser considerados generalizações de algoritmos já vistos, e apresentam boas
+performances.
+
+
+\subsubsection{Algoritmo Shell Sort}
+\label{sec:algoritmo-shell-sort}
+
+O \emph{Shell sort} foi desenvolvido por Donald Shell. Este algoritmo utiliza a
+ideia de enxergar a sequência a ser ordenada como sendo composta por várias
+subsequencias intercaladas com um certo intervalo (\emph{gap}) entre elementos
+de cada sequência. Por exemplo, suponhamos um vetor de 10 posições (0 a 9), e um
+intervalo de 5 isso geraria 5 subsequencias de 2 elementos: 0 e 5; 1 e 6; 2 e 7;
+3 e 8; 4 e 9. Cada subsequência é ordenada por \emph{insertion sort}. Em seguida
+diminui-se o \emph{gap} e repete-se o processo. Qualquer sequência de
+\emph{gaps} que termine com um \emph{gap} de tamanho 1 garante a ordenação
+(porque com o \emph{gap} de tamanho 1 o \emph{shell sort} se torna idêntico ao
+\emph{insertion sort}).
+
+A grande melhoria do \emph{shell sort} em relação ao \emph{insert sort} se dá
+nas primeiras iterações, com valores de \emph{gap} maiores, que faz com que
+valores pequenos que estejam no final do vetor sejam rapidamente movidos para as
+posições iniciais.
+
+A complexidade do \emph{shell sort} depende muito dos tamanhos dos \emph{gaps}
+escolhidos e pode variar, no pior caso, desde $\Theta\left(n^2\right)$ até
+$\Theta\left(n^{\sfrac{4}{3}}\right)$. A página da Wikipédia sobre
+\href{https://en.wikipedia.org/wiki/Shellsort}{Shellsort} possui um apanhado
+sobre a complexidade do \emph{shell sort} para várias sequências de \emph{gaps}
+diferentes que já foram propostas na literatura.
+
+\begin{listing}
+\begin{minted}[autogobble,breaklines,linenos,fontsize=\small]{scala}
+  def gterm(k: Int): Int = pow(4, k).toInt + 3 * pow(2, k-1).toInt + 1
+
+  val gapStream: Stream[Int] = 1 #:: (Stream.from(1) map {k => gterm(k)})
+
+  def shellsort[T](a: Array[T])(implicit ord: Ordering[T]): Array[T] = {
+    val gaps = (gapStream takeWhile {g => g < a.size}).toSeq.reverse
+    for (gap <- gaps) {
+      for (i <- gap until a.size) {
+        val temp = a(i)
+        var j = i
+        while (j >= gap && ord.compare(a(j-gap), temp) > 0) {
+          a(j) = a(j - gap)
+          j -= gap
+        }
+        a(j) = temp
+      }
+    }
+    a
+  }
+\end{minted}
+\caption{Implementação do algoritmo Shell sort.}
+\label{lst:shellsort}
+\end{listing}
+
+Nossa implementação utiliza a sequência de \emph{gaps} proposta por Robert
+Sedgewick, onde cada termo de ordem $k$ da sequência é definido pela expressão
+$g(k) = 4^k + 3\cdot 2^{k-1}+1$, e o termo de ordem zero é 1 (i.e., 1, 8, 23,
+77, 281, $\ldots$). Para esta sequência de \emph{gaps} a complexidade no pior
+caso é dada por $\Theta\left( n^{\sfrac{4}{3}} \right)$.
+
+O~\autoref{lst:shellsort} mostra nossa implementação do \emph{shell sort}. Na
+linha 1 temos a função de calcula os termos de ordem $k$ da sequência. na linha
+3 é definida uma \emph{steam}, i.e., uma sequência sem limite definido, de
+\emph{gaps} onde o primeiro termo é 1 e os demais são formados pelos termos de
+ordem $k$ (com $k$ de 1 em diante) da sequência de Sedgewick. Na linha 6,
+pegamos todos os elementos da \emph{stream} que sejam menores que o tamanho do
+vetor em ordem reversa para formar a sequência de \emph{gaps}.
+
+Em nossa implementação, a função \emph{shellsort} recebe dois parâmetros. O
+primeiro é o vetor, \texttt{a}, que será ordenado. O segundo é uma implementação
+da interface \mintinline{scala}{Ordering[T]} que permite fazer a comparação
+entre dois valores de um tipo \texttt{T}. Note que o parâmetro \texttt{ord} é
+definido como \mintinline{scala}{implicit}, o que significa que se houver um
+valor implícito declarado no escopo da chamada da função \texttt{shellsort},
+este parâmetro não precisa ser passado. Nosso programa principal define um
+objeto implícito para comparação de objetos do tipo \mintinline{scala}{Person}.
+
+
+\subsubsection{Algoritmo Comb Sort}
+\label{sec:algoritmo-comb-sort}
+
+O \emph{Comb sort} foi desenvolvido por Włodzimierz Dobosiewicz. Assim como o
+\emph{shell sort}, o \emph{comb sort} também pode ser visto como uma
+generalização de outro algoritmo de ordenação que utiliza \emph{gaps} para
+definir subsequencias intercaladas, e ordenar primeiramente estas subsequencias.
+No caso do \emph{comb sort}, ele é uma generalização do Algoritmo da Bolha,
+notório pelo desempenho pobre. Surpreendentemente, o desempenho do algoritmo
+\emph{comb sort} é consideravelmente mais rápido.
+
+\begin{listing}
+\begin{minted}[autogobble,breaklines,linenos,fontsize=\small]{scala}
+  def combsort[T](a: Array[T])(implicit ord: Ordering[T]): Array[T] = {
+    var gap = a.size
+    val shrink = 1.3
+    var sorted = false
+
+    while (!sorted) {
+      gap = floor(gap/shrink).toInt
+      if (gap > 1) {
+        sorted = false
+      }
+      else {
+        gap = 1
+        sorted = true
+      }
+
+      for (i <- gap until a.size) {
+        if (ord.compare(a(i-gap), a(i)) > 0) {
+          swap(a, i-gap, i)
+          sorted = false
+        }
+      }
+    }
+    a
+  }
+\end{minted}
+\caption{Implementação do algoritmo Comb sort.}
+\label{lst:combsort}
+\end{listing}
+
+Diferentemente do que acontece com o \emph{shell sort}, o algoritmo \emph{comb
+  sort} não é muito sensível às sequências de intervalos e esta sequência
+tipicamente é definida como sendo $[\sfrac{n}{k}, \sfrac{n}{k^2},
+\sfrac{n}{k^3}, \ldots, 1]$, onde $k$ é chamado de \emph{fator de encolhimento}.
+Tipicamente, o algoritmo \emph{comb sort} apresenta seu melhor desempenho com
+fator de encolhimento $k = 1.3$.
+
+
+%%% ============================================================================
+\section{Análise de Desempenho dos Algoritmos}
+\label{sec:analise-desempenho}
+
+Como é possível ver no~\autoref{lst:mysort-run}, a linha 6 coleta o tempo do
+sistema imediatamente antes de acionar o algoritmo de ordenação selecionado, e
+imediatamente após a execução do algoritmo de ordenação o tempo do sistema é
+coletado novamente, na linha 13. O tempo transcorrido é relatado ao final da
+execução do programa. Entretanto, há outras questões a considerar. Pode haver
+variação no tempo de execução do programa em função de uma série de fatores
+externos ao nosso código. Por isso, a forma mais segura de analisar a
+performance é executar cada programa várias vezes para um mesmo arquivo de
+entrada e trabalhar com a média dos tempos coletados. As seções seguintes
+descrevem como foi feita a coleta dos dados de tempo de execução e como esses
+dados foram analisados.
+
+Todos os testes foram executado em um \emph{notebook} Acer Aspire V15, com
+processador Intel Core i7, e 32Gb de RAM.
+
+
+\subsection{Coleta e Pré-processamento de Dados}
+\label{sec:coleta-preproc}
+
+Como dito anteriormente, cada algoritmo de ordenação -- no nosso caso o
+\emph{shell sort} e o \emph{comb sort} -- foi executado uma quantidade de vezes
+sobre cada um dos arquivos de dados e os tempos de execução reportados foram
+coletados e armazenados em um arquivo. Mais especificamente, cada algoritmo de
+ordenação foi executado 25 vezes para cada um dos 25 arquivo de dados. O script
+do interpretador de comandos Bash, apresentado na~\autoref{lst:collect-times},
+realiza esta função.
+
+Uma vez coletados os tempos de execução é necessário processar o arquivo com os
+tempos de execução para extrair as médias por algoritmo e por número de
+registros. Também decidimos que seria interessante extrair os tempos mínimos e
+máximos de execução para cada algoritmos e arquivo de dados. Para essa
+finalidade, escrevemos um \emph{script} em Scala, utilizando o shell
+\href{http://ammonite.io/}{Ammonite} que é um interpretador de comandos Scala
+com algumas facilidades de importação de bibliotecas e código de outros
+\emph{scripts}.
+
+O código fonte do \emph{script} criado para a preparação dos dados de tempo de
+execução é mostrado na~\autoref{lst:prepare-times}. O \emph{script} espera o
+identificador do algoritmo para o qual devem ser calculadas as estatísticas, o
+nome do arquivo de dados de entrada (contendo os dados de tempo de execução), e
+o nome do arquivo de saída, onde serão gravadas as estatísticas.
+
+\sisetup{round-mode=places,round-precision=3}
+
+\begin{table}
+  \centering
+    \csvreader[tabular=|r|r|r|r|,
+    table head=\hline\textbf{n} & \textbf{Média} & \textbf{Mínimo} & \textbf{Máximo}\\\hline,
+    late after line=\\\hline,
+    head to column names]{../report-data/shellsort-times-2018-09-28.csv}%
+    {}%
+    {\num{\n} & \num{\mean} & \num{\min} & \num{\max}}
+  \caption{Estatísticas dos tempos de execução do algoritmo \emph{Shell sort}.}
+  \label{tab:stats-shellsort}
+\end{table}
+
+\begin{table}
+  \centering
+    \csvreader[tabular=|r|r|r|r|,
+    table head=\hline\textbf{n} & \textbf{Média} & \textbf{Mínimo} & \textbf{Máximo}\\\hline,
+    late after line=\\\hline,
+    head to column names]{../report-data/combsort-times-2018-09-29.csv}%
+    {}%
+    {\num{\n} & \num{\mean} & \num{\min} & \num{\max}}
+  \caption{Estatísticas dos tempos de execução do algoritmo \emph{Comb sort}.}
+  \label{tab:stats-combsort}
+\end{table}
+
+A~\autoref{tab:stats-shellsort} e a~\autoref{tab:stats-combsort} mostram as
+estatísticas extraídas dos arquivos com os tempos de execução para os algoritmos
+\emph{Shell sort} e \emph{Comb sort} respectivamente. Todos os tempos são dados
+em milissegundos.
+
+
+\subsection{Análise dos Resultados}
+\label{sec:analise-result}
+
+
+\newpage
+
+%%% ============================================================================
+\appendix
+
+\section{Scripts de Shell}
+\label{sec:scripts-de-shell}
+
+% ==============================================================================
+\subsection{Script de shell para geração dos arquivos de dados}
+\addcontentsline{lol}{subsection}{\thesubsection~~\,Script de shell para geração
+  dos arquivos de dados.} 
+\label{lst:mkdata}
+
+\inputminted[linenos,fontsize=\footnotesize]{bash}{../mkdata.sh}
+
+
+% ==============================================================================
+\subsection{Script de shell para execução dos algoritmos de ordenação}
+\addcontentsline{lol}{subsection}{\thesubsection~~\,Script de shell para
+  execução dos algoritmos de ordenação}
+\label{lst:collect-times}
+
+\inputminted[linenos,breaklines,fontsize=\footnotesize]{bash}{../collect-times.sh}
+
+
+% ==============================================================================
+\subsection{Script de shell para pré-processamento do tempos de execução}
+\addcontentsline{lol}{subsection}{\thesubsection~~\,Script de shell para
+  pré-processamento do tempos de execução}
+\label{lst:prepare-times}
+
+\inputminted[linenos,breaklines,fontsize=\footnotesize]{scala}{../report-data/prepare.sc}
+
+
+
+
+
+
+\end{document}
+
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: t
+%%% ispell-local-dictionary: "brasileiro"
+%%% TeX-command-extra-options: "-shell-escape"
+%%% End:

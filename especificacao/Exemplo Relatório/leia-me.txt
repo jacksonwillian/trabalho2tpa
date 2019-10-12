@@ -1,0 +1,9 @@
+Esse exemplo ilustra o formato do relatório. É importante notar que este exemplo não tem exatamente a mesma estrutura do relatório que os alunos devem entregar. Por exemplo:
+
+- O relatório dos alunos não deve ter a seção “Geração de Dados para Testes”, visto que o professor já disponibilizou os dados.
+
+- A análise dos resultados no relatório de exemplo está incompleta. Faltam os gráficos e a análise mais detalhada do comportamento do tempo de execução dos algoritmos.
+
+- O trabalho dos alunos pode ou não utilizar scripts para automatizar a execução e os testes. Caso não use, não há a necessidade de apresentá-los no relatório.
+
+- Essa é a versão do exemplo que foi usada para 2018/2, pode haver outros pontos que tenham que ser mudados.
