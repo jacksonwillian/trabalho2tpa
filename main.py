@@ -5,6 +5,8 @@ from algoritmo import quicksort
 from algoritmo import selectsort
 # IMPORTACAO DOS ALGORITMIS DE COMPARACAO
 from algoritmo import comparacao
+# IMPORTACAO TIME
+import time 
 
 # DICIONARIO COM OS NOMES DAS FUNCOES EXISTENTES E O APONTAMENTO PARA AS MESMAS
 id_f_ordenacao = {'insertsort':[],'heapsort':[heapsort.f_heapsort],'quicksort':[],'selectsort':[]}
@@ -74,7 +76,7 @@ def main(args):
 			print("Ordenando os dados...  ['Ctrl + C' p/ terminar]")
 
 			# PEGAR TEMPO INICIAL
-			tempo_inicial = 1
+			tempo_inicial = int (time.time()*1000)
 
 			try:
 				
@@ -89,7 +91,7 @@ def main(args):
 			finally:
 
 				# PEGAR TEMPO FINAL
-				tempo_final = 0
+				tempo_final = int (time.time()*1000)
 
 				# SALVAR O ARQUIVO CSV
 				print("Salvando arquivo '{}'...".format(args[3]))
