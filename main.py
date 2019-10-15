@@ -9,8 +9,10 @@ from algoritmo import comparacao
 import time 
 
 # DICIONARIO COM OS NOMES DAS FUNCOES EXISTENTES E O APONTAMENTO PARA AS MESMAS
-id_f_ordenacao = {'insertsort':[],'heapsort':[heapsort.f_heapsort],'quicksort':[],'selectsort':[]}
-id_f_comparacao = {'compara_texto':[comparacao.f_compara_texo], 'compara_inteiro':[comparacao.f_compara_inteiro], 'compara_data':[comparacao.f_compara_data]}
+id_f_ordenacao = {'insertsort':[],'heapsort':[heapsort.f_heapsort],'quicksort':[quicksort.f_quicksort],'selectsort':[]}
+id_f_comparacao = {'compara_texto':[comparacao.f_compara_texo], 
+'compara_inteiro':[comparacao.f_compara_inteiro], 'compara_data':[comparacao.f_compara_data],
+'compara_gen_D':[comparacao.f_comp_gen_D], 'compara_gen_C':[comparacao.f_comp_gen_C]}
 
 # FUNCAO DE CARREGAR O ARQUIVO NA MEMORIA COM LISTA
 # OBS.: AS COLUNAS ESTÃO TODAS COMO STRINGS

@@ -12,3 +12,9 @@ def f_compara_inteiro(a, b, c):
 
 def f_compara_data(a, b, c):
 	pass
+
+def f_comp_gen_C(a,b,c):
+	return (a[c]<b[c])
+
+def f_comp_gen_D(a,b,c):
+	return (a[c]>b[c])
