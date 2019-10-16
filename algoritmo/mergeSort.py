@@ -10,12 +10,12 @@ def mergeSort(lst):
 		lado_esq 	= mergeSort(lado_esq)
 		lado_dirt 	= mergeSort(lado_dirt)	
 
-		return merge(lado_esq,lado_dirt,meio)
+		return merge(lado_esq,lado_dirt)
 
 	return lst
 
 
-def merge(lado_esq,lado_dirt,meio):
+def merge(lado_esq,lado_dirt):
 
 	index_dir 	= 0
 	index_esq 	= 0
