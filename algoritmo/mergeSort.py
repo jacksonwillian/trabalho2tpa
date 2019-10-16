@@ -2,7 +2,6 @@ def mergeSort(lst):
 
 	if(len(lst) > 1):
 		
-	
 		meio = len(lst)//2;
 
 		lado_esq 	= lst[:meio]
@@ -24,10 +23,8 @@ def merge(lado_esq,lado_dirt,meio):
 	tam_dir		= len(lado_dirt)
 	new_lst 	= []
 	
-	
 	while index_esq < tam_esq and index_dir < tam_dir:
-		
-		
+			
 		if(lado_esq[index_esq] < lado_dirt[index_dir]):
 			
 			new_lst.append(lado_esq[index_esq])
@@ -38,7 +35,6 @@ def merge(lado_esq,lado_dirt,meio):
 			new_lst.append(lado_dirt[index_dir])
 			index_dir+=1
 		
-	
 	new_lst += lado_dirt[index_dir:]
 	new_lst += lado_esq[index_esq:]
 	
