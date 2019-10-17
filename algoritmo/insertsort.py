@@ -1,20 +1,23 @@
-def insertSort(lista):
+def f_insertsort(a, arg1, arg2):
+  global f_comparacao
+  global v_coluna
+  f_comparacao = arg1
+  v_coluna = arg2
 
-  for i in range(1,len(lista)):
-    chave = lista[i]
+  for i in range(1,len(a)):
+    chave = a[i]
     j = i-1
 
-    while( j >= 0 and lista[j] > chave):
+    while( j >= 0 and not (f_comparacao(chave, a[j], v_coluna))):
     
-      lista[j+1] = lista[j]
+      a[j+1] = a[j]
     
       j = j -1
   
-    lista[j+1] = chave
+    a[j+1] = chave
  
   
-  return lista
-
+  return a
 
 
 

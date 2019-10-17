@@ -3,12 +3,14 @@ from algoritmo import insertsort
 from algoritmo import heapsort
 from algoritmo import quicksort 
 from algoritmo import selectsort
+from algoritmo import introsorty
 # IMPORTACAO DOS ALGORITMIS DE COMPARACAO
 from algoritmo import comparacao
+# BIBLIOTECAS 
 import time as time_
 
 # DICIONARIO COM OS NOMES DAS FUNCOES EXISTENTES E O APONTAMENTO PARA AS MESMAS
-id_f_ordenacao = {'insertsort':[],'heapsort':[heapsort.f_heapsort],'quicksort':[quicksort.f_quicksort],'selectsort':[]}
+id_f_ordenacao = {'insertsort':[insertsort.f_insertsort],'heapsort':[heapsort.f_heapsort],'quicksort':[quicksort.f_quicksort],'selectsort':[], 'introsort':[introsorty.f_introsort]}
 id_f_comparacao = {'compara_texto':[comparacao.f_compara_texo], 'compara_inteiro':[comparacao.f_compara_inteiro], 'compara_data':[comparacao.f_compara_data], 'compara_gen_C':[comparacao.f_comp_gen_C],'compara_gen_D':[comparacao.f_comp_gen_D]}
 
 # FUNCAO DE CARREGAR O ARQUIVO NA MEMORIA COM LISTA
