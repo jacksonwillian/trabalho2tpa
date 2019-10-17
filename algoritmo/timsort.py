@@ -1,7 +1,9 @@
 # N = Comprimento so vetor de entrada
 # RUN = Subvetor ordenado que compõe o vetor de entrada
 # Minrun = É o comprimento minimo dos runs.Este numero é calculado baseado no tamanho do vetor.
-RUN = 3
+
+RUN = 32
+import random
 
 def merge(lado_esq,lado_dirt):
 
@@ -45,7 +47,6 @@ def insertSort(lista):
    
   return lista
 
-
 def timSort(lst):
 	
 	sub_lst 	= []
@@ -54,36 +55,33 @@ def timSort(lst):
 	tam 		= len(lst)
 
 	for i in range (0,tam,RUN):
-		
+
 		lst[i:i+RUN] = insertSort(lst[i:i+RUN])
-	
+				
 	size = RUN
 
 	while size < tam:
-		
 
-		baseESQ = size - RUN
-		endESQ	= size
 
-		baseDIR = size
-		endDIR = size + RUN
+		for x in range (0,tam,2*size):
 
-		lado_esq = lst[baseESQ:endESQ]
-		lado_dirt = lst[baseDIR:endDIR]
-		
-		print(lado_esq)
-		print(lado_dirt)
-		
-		lst[baseESQ:endDIR] = merge(lado_esq,lado_dirt)
+				lst[x:x + 2*RUN] = merge(lst[x:x+size],lst[x+size:x+2*RUN])
 
 		size = size*2
 			
-	return lst
-	
+	return lst	
 
 
-l = [8,1,5,2,1,0]
-print(timSort(l))
+
+l = []
+
+for i in range(66):
+	l.append(random.randint(0,99))
+
+print(l)
+print()
+l = timSort(l)
+print(l)
 
 
 
