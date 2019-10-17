@@ -16,7 +16,7 @@ def f_introsort(a, arg1, arg2):
     introsort_(a, 0, n, profundidade_max)
 
 def introsort_(a,ini, fin, profundidade_max):
-    ##Esse favor de constante depende, do dado que estamos ordenando, a partir desse valor de n não vale mais a pena usar o insertion
+    ##Esse 20 depende do que estamos ordenando é o limite em que vale a pena usar o insertion sort
     t_vetor = len(a)
     if t_vetor <= 20:
         insertsort.f_insertsort(a,f_comparacao, v_coluna)
