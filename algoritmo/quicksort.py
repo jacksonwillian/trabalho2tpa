@@ -9,7 +9,7 @@ def particiona(v,i,f,f_comparacao,v_coluna):
   q = i-1
 
   for j in range(i,f):
-    if ( f_comparacao(v[j], pivo, v_coluna) ):
+    if not (f_comparacao(v[j], pivo, v_coluna)):
       q += 1 
       v[q],v[j] = v[j],v[q]
   v[q+1],v[f] = v[f],v[q+1]

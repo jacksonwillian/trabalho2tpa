@@ -5,14 +5,11 @@ from algoritmo import quicksort
 from algoritmo import selectsort
 # IMPORTACAO DOS ALGORITMIS DE COMPARACAO
 from algoritmo import comparacao
-# IMPORTACAO TIME
-import time 
+import time as time_
 
 # DICIONARIO COM OS NOMES DAS FUNCOES EXISTENTES E O APONTAMENTO PARA AS MESMAS
 id_f_ordenacao = {'insertsort':[],'heapsort':[heapsort.f_heapsort],'quicksort':[quicksort.f_quicksort],'selectsort':[]}
-id_f_comparacao = {'compara_texto':[comparacao.f_compara_texo], 
-'compara_inteiro':[comparacao.f_compara_inteiro], 'compara_data':[comparacao.f_compara_data],
-'compara_gen_D':[comparacao.f_comp_gen_D], 'compara_gen_C':[comparacao.f_comp_gen_C]}
+id_f_comparacao = {'compara_texto':[comparacao.f_compara_texo], 'compara_inteiro':[comparacao.f_compara_inteiro], 'compara_data':[comparacao.f_compara_data], 'compara_gen_C':[comparacao.f_comp_gen_C],'compara_gen_D':[comparacao.f_comp_gen_D]}
 
 # FUNCAO DE CARREGAR O ARQUIVO NA MEMORIA COM LISTA
 # OBS.: AS COLUNAS ESTÃO TODAS COMO STRINGS
@@ -27,7 +24,7 @@ def f_read_csv(nome_Arquivo):
 		arq_carregado = ( linha_cabecalho.strip().split(","), )
 		lst_linhas = []
 		linha = arq.readline()
-		while linha != "":
+		while linha != "":#000000
 			lst_linhas.append( linha.strip().split(",") )
 			linha = arq.readline()
 		arq.close()	
@@ -78,7 +75,7 @@ def main(args):
 			print("Ordenando os dados...  ['Ctrl + C' p/ terminar]")
 
 			# PEGAR TEMPO INICIAL
-			tempo_inicial = int (time.time()*1000)
+			tempo_inicial = int (time_.time()*1000)
 
 			try:
 				
@@ -93,7 +90,7 @@ def main(args):
 			finally:
 
 				# PEGAR TEMPO FINAL
-				tempo_final = int (time.time()*1000)
+				tempo_final = int (time_.time()*1000)
 
 				# SALVAR O ARQUIVO CSV
 				print("Salvando arquivo '{}'...".format(args[3]))
