@@ -3,15 +3,17 @@ from algoritmo import insertsort
 from algoritmo import heapsort
 from algoritmo import quicksort 
 from algoritmo import selectsort
-from algoritmo import introsorty
+from algoritmo import mergesort
+from algoritmo import introsort
+from algoritmo import timsort
 # IMPORTACAO DOS ALGORITMIS DE COMPARACAO
 from algoritmo import comparacao
 # BIBLIOTECAS 
 import time as time_
 
 # DICIONARIO COM OS NOMES DAS FUNCOES EXISTENTES E O APONTAMENTO PARA AS MESMAS
-id_f_ordenacao = {'insertsort':[insertsort.f_insertsort],'heapsort':[heapsort.f_heapsort],'quicksort':[quicksort.f_quicksort],'selectsort':[], 'introsort':[introsorty.f_introsort]}
-id_f_comparacao = {'compara_texto':[comparacao.f_compara_texo], 'compara_inteiro':[comparacao.f_compara_inteiro], 'compara_data':[comparacao.f_compara_data], 'compara_gen_C':[comparacao.f_comp_gen_C],'compara_gen_D':[comparacao.f_comp_gen_D]}
+id_f_ordenacao = {'insertsort':[insertsort.f_insertsort],'heapsort':[heapsort.f_heapsort],'quicksort':[quicksort.f_quicksort],'selectsort':[selectsort.f_selectsort], 'mergesort':[mergesort.f_mergesort], 'introsort':[introsort.f_introsort], 'timsort':[timsort.f_timsort]}
+id_f_comparacao = {'compara_texto':[comparacao.f_compara_texto], 'compara_texto_desc':[comparacao.f_compara_texto_desc], 'compara_inteiro':[comparacao.f_compara_inteiro], 'compara_data':[comparacao.f_compara_data], 'compara_gen_C':[comparacao.f_comp_gen_C],'compara_gen_D':[comparacao.f_comp_gen_D]}
 
 # FUNCAO DE CARREGAR O ARQUIVO NA MEMORIA COM LISTA
 # OBS.: AS COLUNAS ESTÃO TODAS COMO STRINGS
@@ -66,7 +68,7 @@ def main(args):
 		# VERIFICA OS DOIS PRIMEIROS ARGUMENTOS 
 		if (args[0] in id_f_ordenacao) and (args[1] in id_f_comparacao):
 
-			# DEFINE POSICAO DA COLUNA >= 0
+			# DEFINE POSICAO DA COLUNA DO CSV
 			posicao = 2 # coluna Identiﬁcador de Usuario (uid).
 
 			# CARREGA O ARQUIVO CSV
@@ -82,12 +84,12 @@ def main(args):
 			try:
 				
 				f_ordenar( arq_carregado[1], args[0], args[1], posicao)
-
+				print("A execução terminou com SUCESSO!")
 			except Exception as e:
 				print ("ERRO | A execução foi interrompido {} ".format(e))
 
 			except KeyboardInterrupt as e:
-				print ("A execução foi interrompida!")
+				print ("A execução foi INTERROMPIDA!")
 
 			finally:
 

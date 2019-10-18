@@ -12,18 +12,18 @@ def posicaoMaiorFilho(a, i, j):
 
 	# VERIFICA O FILHO MAIOR QUANDO EXISTE DOIS FILHOS
 	if (filhoEsquerdo != -1 and filhoDireito != -1):
-		if f_comparacao(a[filhoEsquerdo], a[filhoDireito], v_coluna) == 1 and f_comparacao(a[filhoEsquerdo], a[i], v_coluna ) == 1:
+		if f_comparacao( a[filhoEsquerdo][v_coluna], a[filhoDireito][v_coluna] ) == 1 and f_comparacao( a[filhoEsquerdo][v_coluna], a[i][v_coluna] ) == 1:
 			return filhoEsquerdo
-		elif f_comparacao(a[filhoDireito], a[filhoEsquerdo], v_coluna) == 1 and f_comparacao(a[filhoDireito], a[i], v_coluna ) == 1:
+		elif f_comparacao( a[filhoDireito][v_coluna], a[filhoEsquerdo][v_coluna] ) == 1 and f_comparacao( a[filhoDireito][v_coluna], a[i][v_coluna] ) == 1:
 			return filhoDireito
 		else:
 			return -1
 
 	# VERIFICA O FILHO MAIOR QUANDO NÃO EXISTE UM DOS FILHOS
 	else:
-		if (filhoEsquerdo != -1 ) and f_comparacao(a[filhoEsquerdo], a[i] , v_coluna) == 1: 
+		if (filhoEsquerdo != -1 ) and f_comparacao( a[filhoEsquerdo][v_coluna], a[i][v_coluna]) == 1: 
 			return filhoEsquerdo
-		elif (filhoDireito != -1 ) and f_comparacao(a[filhoDireito], a[i] , v_coluna) == 1:
+		elif (filhoDireito != -1 ) and f_comparacao( a[filhoDireito][v_coluna], a[i][v_coluna] ) == 1:
 			return filhoDireito
 		else:
 			return -1
