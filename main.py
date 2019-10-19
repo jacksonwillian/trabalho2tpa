@@ -131,12 +131,7 @@ def salvaResultado(linha):
 	nome_arquivo = "resultado.csv"
 
 	if not os.path.exists('resultado.csv'):
-
-		print("ENTROU")
 		linha = "id, nome arquivo, tamanho, tempo, hora e data, feedback\n" + linha
-	else:
-
-		print("NAO ENTROU")
 
 	try:
 		arq = open(nome_arquivo, "a")
