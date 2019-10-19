@@ -11,6 +11,7 @@ from algoritmo import comparacao
 # BIBLIOTECAS 
 import time as time_
 from datetime import datetime
+import os.path
 # DICIONARIO COM OS NOMES DAS FUNCOES EXISTENTES E O APONTAMENTO PARA AS MESMAS
 id_f_ordenacao = {'insertsort':[insertsort.f_insertsort],'heapsort':[heapsort.f_heapsort],'quicksort':[quicksort.f_quicksort],'selectsort':[selectsort.f_selectsort], 'mergesort':[mergesort.f_mergesort], 'introsort':[introsort.f_introsort], 'timsort':[timsort.f_timsort]}
 id_f_comparacao = {'compara_texto':[comparacao.f_compara_texto], 'compara_inteiro':[comparacao.f_compara_inteiro], 'compara_data':[comparacao.f_compara_data], 'compara_gen_C':[comparacao.f_comp_gen_C],'compara_gen_D':[comparacao.f_comp_gen_D]}
@@ -111,7 +112,7 @@ def main(args):
 				# RELATAR TEMPO DE EXECUCAO
 				print("\n{} \t {} \t {}\n".format(args[0], tam_lst, (tempo_final - tempo_inicial) ))
 
-				resultado = "{},{},{},{},{}".format(args[0], tam_lst, (tempo_final - tempo_inicial),datetime.now().strftime('%d/%m/%Y %H:%M') ,mgs_execucao.strip()) 
+				resultado = "{},{},{},{},{},{}".format(args[0], args[2], tam_lst, (tempo_final - tempo_inicial),datetime.now().strftime('%d/%m/%Y %H:%M') ,mgs_execucao.strip()) 
 				print("\nGRAVOU RESULTADO: ", salvaResultado(resultado))
 
 
@@ -128,8 +129,18 @@ def main(args):
 def salvaResultado(linha):
 	
 	nome_arquivo = "resultado.csv"
+
+	if not os.path.exists('resultado.csv'):
+
+		print("ENTROU")
+		linha = "id, nome arquivo, tamanho, tempo, hora e data, feedback\n" + linha
+	else:
+
+		print("NAO ENTROU")
+
 	try:
 		arq = open(nome_arquivo, "a")
+		
 		arq.write(linha + "\n")
 		arq.close()
 		return True
