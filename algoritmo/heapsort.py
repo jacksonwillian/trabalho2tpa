@@ -54,7 +54,7 @@ def f_heapsort(a, arg1, arg2):
 	while ((posicaoFinal -1 ) >= posicaoInicial):
 		posicaoMeio = int(posicaoFinal/2)
 		while( posicaoInicial <= posicaoMeio):
-			a = heap(a, posicaoMeio, posicaoFinal)
+			a = heap(a, 0, posicaoFinal)
 			posicaoMeio -=  1
 		aux = a[posicaoFinal]
 		a[posicaoFinal] = a[0]
