@@ -8,14 +8,6 @@ def f_compara_texto(a, b):
 		return 0
 
 
-def f_compara_texto_desc(a, b):
-	if(a < b):
-		return 1
-	elif(a > b):
-		return -1
-	else:
-		return 0
-
 # def f_compara_texo(a, b, c):
 # 	if(a[c] > b[c]):
 # 		return 1

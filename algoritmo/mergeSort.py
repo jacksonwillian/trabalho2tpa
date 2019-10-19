@@ -11,6 +11,12 @@ def f_mergesort(lst, arg1 , arg2):
 	f_comparacao = arg1
 	v_coluna = arg2
 
+	return mergesort(lst)
+
+
+
+def mergesort(lst):
+
 	if(len(lst) > 1):
 		
 		meio = len(lst)//2
@@ -18,8 +24,8 @@ def f_mergesort(lst, arg1 , arg2):
 		lado_esq = lst[:meio]
 		lado_dirt = lst[meio:]
 
-		lado_esq = f_mergesort(lado_esq, arg1, arg2)
-		lado_dirt = f_mergesort(lado_dirt, arg1, arg2)    
+		lado_esq = mergesort(lado_esq)
+		lado_dirt = mergesort(lado_dirt)    
 
 		return merge(lado_esq, lado_dirt)
 
@@ -36,7 +42,7 @@ def merge(lado_esq,lado_dirt):
 	
 	while index_esq < tam_esq and index_dir < tam_dir:
 			
-		if (f_comparacao(lado_esq[index_esq][v_coluna], lado_dirt[index_dir][v_coluna]) ==  1):
+		if (f_comparacao(lado_esq[index_esq][v_coluna], lado_dirt[index_dir][v_coluna]) ==  -1):
 			
 			new_lst.append(lado_esq[index_esq])
 			index_esq+=1    

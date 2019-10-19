@@ -13,26 +13,26 @@ import time as time_
 
 # DICIONARIO COM OS NOMES DAS FUNCOES EXISTENTES E O APONTAMENTO PARA AS MESMAS
 id_f_ordenacao = {'insertsort':[insertsort.f_insertsort],'heapsort':[heapsort.f_heapsort],'quicksort':[quicksort.f_quicksort],'selectsort':[selectsort.f_selectsort], 'mergesort':[mergesort.f_mergesort], 'introsort':[introsort.f_introsort], 'timsort':[timsort.f_timsort]}
-id_f_comparacao = {'compara_texto':[comparacao.f_compara_texto], 'compara_texto_desc':[comparacao.f_compara_texto_desc], 'compara_inteiro':[comparacao.f_compara_inteiro], 'compara_data':[comparacao.f_compara_data], 'compara_gen_C':[comparacao.f_comp_gen_C],'compara_gen_D':[comparacao.f_comp_gen_D]}
+id_f_comparacao = {'compara_texto':[comparacao.f_compara_texto], 'compara_inteiro':[comparacao.f_compara_inteiro], 'compara_data':[comparacao.f_compara_data], 'compara_gen_C':[comparacao.f_comp_gen_C],'compara_gen_D':[comparacao.f_comp_gen_D]}
 
 # FUNCAO DE CARREGAR O ARQUIVO NA MEMORIA COM LISTA
 # OBS.: AS COLUNAS ESTÃO TODAS COMO STRINGS
 def f_read_csv(nome_Arquivo):
-	arq_carregado = ()
+	arq_carregado = []
 	try:
 		arq  = open( nome_Arquivo , "r" )
 	except IOError as e:
 		print ("ERRO | I/O {} ".format(e))
 	else:
 		linha_cabecalho = arq.readline()
-		arq_carregado = ( linha_cabecalho.strip().split(","), )
+		arq_carregado.append(linha_cabecalho.strip().split(",") )
 		lst_linhas = []
 		linha = arq.readline()
 		while linha != "":#000000
 			lst_linhas.append( linha.strip().split(",") )
 			linha = arq.readline()
 		arq.close()	
-		arq_carregado += ( lst_linhas, )
+		arq_carregado.append(lst_linhas )
 	return arq_carregado
 
 # FUNCAO PARA SALVAR O ARQUIVO COMO LISTA NO ARQUIVO
@@ -59,9 +59,8 @@ def f_ordenar( lista, id_ordenacao, id_comparacao , posicao_coluna):
 
 	f_ord_generico = id_f_ordenacao[id_ordenacao][0]
 	f_cp_generico = id_f_comparacao[id_comparacao][0]
-	f_ord_generico(lista, f_cp_generico, posicao_coluna)
-
-	return lista
+	a = f_ord_generico(lista[1], f_cp_generico, posicao_coluna)
+	lista[1] = a
 
 def main(args):
 	if (len(args) == 4):
@@ -83,7 +82,8 @@ def main(args):
 
 			try:
 				
-				f_ordenar( arq_carregado[1], args[0], args[1], posicao)
+				f_ordenar( arq_carregado, args[0], args[1], posicao)
+				
 				print("A execução terminou com SUCESSO!")
 			except Exception as e:
 				print ("ERRO | A execução foi interrompido {} ".format(e))
@@ -115,4 +115,3 @@ def main(args):
 if __name__ == '__main__':
 	import sys
 	sys.exit(main(sys.argv[1:]))
-
