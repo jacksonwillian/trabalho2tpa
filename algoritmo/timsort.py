@@ -11,9 +11,9 @@ def merge(lado_esq,lado_dirt):
 
     index_dir     = 0
     index_esq     = 0
-    tam_esq        = len(lado_esq)
-    tam_dir        = len(lado_dirt)
-    new_lst     = []
+    tam_esq       = len(lado_esq)
+    tam_dir       = len(lado_dirt)
+    new_lst       = []
     
     while (index_esq < tam_esq) and (index_dir < tam_dir):
             
@@ -50,7 +50,6 @@ def insertSort(lista):
   return lista
 
 
-
 def f_timsort(lst, arg1, arg2):
 
     # INICIALIZACAO DO CONTEUDO DAS VARIAVEIS GLOBAIS
@@ -65,7 +64,6 @@ def f_timsort(lst, arg1, arg2):
     tam         = len(lst)
     
     lst[0:tam] = insertSort(lst[0:tam])
-
 
     resto = tam % RUN  # CALCULA O RESTO
     
@@ -82,7 +80,6 @@ def f_timsort(lst, arg1, arg2):
     
             lst[i:i+RUN] = insertSort(lst[i:i+RUN])
                     
-
     iprincipal = 0
     fprincipal = (2*RUN + resto)
     

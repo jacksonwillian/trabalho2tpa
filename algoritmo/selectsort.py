@@ -16,4 +16,5 @@ def f_selectsort(lista, arg1, arg2 ):
 		aux = lista[i]
 		lista[i] = lista[menor]
 		lista[menor] = aux
+		
 	return lista

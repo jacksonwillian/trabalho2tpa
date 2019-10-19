@@ -43,3 +43,5 @@ def f_introsort(a, arg1, arg2):
 
     profundidade_max = math_.floor(math_.log2(len(a))) * 2
     introsort_(a, 0, n, profundidade_max)
+
+    return a

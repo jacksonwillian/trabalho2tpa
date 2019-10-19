@@ -10,4 +10,5 @@ def f_insertsort(a, arg1, arg2):
       a[j+1] = a[j]
       j = j -1
     a[j+1] = chave
+    
   return a

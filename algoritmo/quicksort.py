@@ -25,6 +25,7 @@ def quicksort(v,i,f):
     quicksort(v, r+1, f)
 
 def f_quicksort(a, arg1, arg2):
+  
 	# INICIALIZACAO DO CONTEUDO DAS VARIAVEIS GLOBAIS
   global f_comparacao
   global v_coluna
@@ -33,4 +34,5 @@ def f_quicksort(a, arg1, arg2):
 
   t_vetor = len(a)-1
   quicksort(a, 0, t_vetor)
+
   return a
