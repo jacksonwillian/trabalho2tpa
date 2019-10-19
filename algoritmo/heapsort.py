@@ -4,8 +4,6 @@ v_coluna = None
 
 
 
-
-
 # RETORNA O INDICE DO MAIOR FILHO QUE É MAIOR QUE A RAIZ
 # RETORNA -1 QUANDO NÃO ENCONTRA ESSE FILHO 
 def maxheap(a, i, tam):
@@ -23,14 +21,6 @@ def maxheap(a, i, tam):
 	if maior != i:
 		a[maior], a[i] = a[i], a[maior]
 		maxheap(a, maior, tam)
-	
-
-def heap(a):
-
-
-	printlista(a)
-	return a
-
 
 
 def f_heapsort(a, arg1, arg2):
