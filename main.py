@@ -7,9 +7,9 @@ from algoritmo import mergesort
 from algoritmo import introsort
 from algoritmo import timsort
 # IMPORTACAO DAS FUNCAO DE COMPARACAO
-import comparacao
+from util import comparacao
 # IMPORTACAO DA FUNCAO DE MANIPULACAO DE ARQUIVOS CSV
-import manipula_csv
+from util import manipula_csv
 # BIBLIOTECAS 
 import time as time_
 from datetime import datetime
@@ -32,7 +32,7 @@ def main(args):
 			# DEFINE POSICAO DA COLUNA DO CSV
 			posicao = 2 # coluna Identiﬁcador de Usuario (uid).
 			# CARREGA O ARQUIVO CSV
-			# print("Carregando arquivo '{}'...".format(args[2]))
+			print("Carregando arquivo '{}'...\n".format(args[2]))
 			arq_carregado = manipula_csv.f_read_csv(args[2])
 			tam_lst = len(arq_carregado[1])
 			print("Ordenando os dados...  ['Ctrl + C' p/ terminar]")

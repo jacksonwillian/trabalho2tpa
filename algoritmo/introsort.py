@@ -109,4 +109,3 @@ def mediana(vetor,a,b,c):
       return b
     
 
-
