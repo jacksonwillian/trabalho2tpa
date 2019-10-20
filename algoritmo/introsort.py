@@ -15,12 +15,16 @@ def introsort_(a,ini, fin, profundidade_max):
         insertsort.f_insertsort(a,f_comparacao, v_coluna)
     if profundidade_max == 0:
         heapsort.f_heapsort(a, f_comparacao, v_coluna)
-    else:
-        if (fin > ini):
-            i_part = particiona(a,ini, fin)
-            introsort_(a, ini, i_part-1, profundidade_max -1)
-            introsort_(a,i_part+1, fin, profundidade_max -1)
+    
+    cand_pivot = [a[ini],a[fin],a[t_vetor//2]]
+    
+    a_insertsort(cand_pivot)
+    pivo = cand_pivot[1]
+    pivo,a[fin] = a[fin],pivo
 
+    i_part = particiona(a,ini, fin)
+    introsort_(a, ini, i_part-1, profundidade_max -1)
+    introsort_(a,i_part+1, fin, profundidade_max -1)
 
 def particiona(v,i,f):
   pivo = v[f]
@@ -45,3 +49,14 @@ def f_introsort(a, arg1, arg2):
     introsort_(a, 0, n, profundidade_max)
 
     return a
+
+def a_insertsort(a):
+
+  for i in range(1, len(a)):
+    chave = a[i]
+    j = i-1
+    while( j >= 0) and ( f_comparacao(a[j], chave) == 1):
+      a[j+1] = a[j]
+      j = j -1
+    a[j+1] = chave
+    
