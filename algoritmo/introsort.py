@@ -1,5 +1,3 @@
-from algoritmo import insertsort
-from algoritmo import heapsort
 import math as math_
 
 # DECLARACAO DAS VARIAVEIS GLOBAIS
@@ -10,7 +8,7 @@ v_coluna = None
 def introsort_(a,ini, fin, profundidade_max):
 
   t_vetor = fin - ini
-  if t_vetor < 22:
+  if t_vetor < 9:
     a_insertsort(a[ini:fin])
     return
   if profundidade_max == 0:
@@ -20,10 +18,9 @@ def introsort_(a,ini, fin, profundidade_max):
   pivo = mediana(a,ini,fin,ini+t_vetor//2)
   a[pivo],a[fin] = a[fin],a[pivo]
 
-  if(fin > ini):
-    i_part = particiona(a,ini,fin)
-    introsort_(a, ini, i_part-1, profundidade_max -1)
-    introsort_(a,i_part+1, fin, profundidade_max -1)
+  i_part = particiona(a,ini,fin)
+  introsort_(a, ini, i_part-1, profundidade_max -1)
+  introsort_(a,i_part+1, fin, profundidade_max -1)
 
 def particiona(v,i,f):
   pivo = v[f]
@@ -44,7 +41,7 @@ def f_introsort(a, arg1, arg2):
   v_coluna = arg2
   n = len(a) - 1
 
-  profundidade_max = math_.floor(math_.log2(len(a)))
+  profundidade_max =  int((math_.log2(len(a))))
   introsort_(a, 0, n, profundidade_max)
 
   return a
