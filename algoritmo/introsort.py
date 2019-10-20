@@ -8,11 +8,9 @@ v_coluna = None
 def introsort_(a,ini, fin, profundidade_max):
 
   t_vetor = fin - ini
-  if len(a) <= 10:
-    return a_insertsort(a)
-
-  elif t_vetor <= 9:
-    return a_insertsort(a[ini:fin+1])
+  if t_vetor < 10:
+    a[ini:fin+1] = a_insertsort(a[ini:fin+1])
+    return
 
   if profundidade_max == 0:
     a_heapsort(a)
@@ -58,6 +56,7 @@ def a_insertsort(a):
       a[j+1] = a[j]
       j = j -1
     a[j+1] = chave
+  return a
 
 def maxheap(a, i, tam):
 	maior  = -1
