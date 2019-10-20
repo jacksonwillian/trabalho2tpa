@@ -1,12 +1,11 @@
-# N = Comprimento so vetor de entrada
-# RUN = Subvetor ordenado que compõe o vetor de entrada
-# Minrun = É o comprimento minimo dos runs.Este numero é calculado baseado no tamanho do vetor.
+# RUN = Subvetor que compõe o vetor de entrada
 
 # DECLARACAO DAS VARIAVEIS GLOBAIS
 f_comparacao = None
 v_coluna = None
 RUN = 0
 
+# Calcula o tamanho do RUN
 def calculaRun(tam):
     run = 32
     resultado = (tam // run) % 2 
@@ -61,15 +60,21 @@ def f_timsort(lst, arg1, arg2):
     
     resto = tam % RUN  # CALCULA O RESTO
     
-    if(tam <= (RUN + resto)):  # SE O TAMANHO DO VETOR É MENOR QUE O RESTO MAIS O TAMANHO, ENTÃO  FAZ UM SUBBLOCO SÓ DO TAMANHO DO VETOR TODO
+    # ORDENACAO DOS SUBVETORES
+    # SE O TAMANHO DO VETOR É MENOR QUE A SOMADO DO RUN MAIS O RESTO DA DIVISAO DO TAMANHO DO VETOR PELO RUN,
+    # ENTÃO  ORDENA O SUBBLOCO DO TAMANHO DO VETOR
+    if(tam <= (RUN + resto)): 
         lst[0:tam] = insertSort(lst[0:tam])
-    else:    
-        lst[0:(RUN + resto)] = insertSort(lst[0:(RUN + resto)])  # O primeiro bloco é o RUN + O RESTO
-        for i in range ((RUN + resto), tam, RUN): # A posição do segundo comçea com RUN + RESTO, da em diante é normal
+    else:
+        # SENAO ORDENA OS SUBBLOCOS COM O TAMANHO DA RUN
+        lst[0:(RUN + resto)] = insertSort(lst[0:(RUN + resto)])  # O TAMANHO DO PRIMEIRO BLOCO É RUN + RESTO
+        for i in range ((RUN + resto), tam, RUN): # A POSICAO DO SEGUNDO BLOCO COMEÇA EM RUN + RESTO, OS DEMAIS SUBBLOCOS TEM TAMANHO RUN
             lst[i:i+RUN] = insertSort(lst[i:i+RUN])
 
+    # MERGES DOS SUBBLOCOS
     while ((RUN + resto) < tam):
-      
+        
+        # OS MERGES DOS SUBBLOCOS SÃO FEITOS PAR A PAR
         iprincipal = 0
         fprincipal = (2*RUN + resto)
         ei = 0
@@ -90,7 +95,9 @@ def f_timsort(lst, arg1, arg2):
     
             lst[iprincipal :  fprincipal ] = merge(lst[ei : ef],  lst[ di: df])  # Intercalar sempre o vetor anterior com o próximo vetor.
         
-        RUN += RUN  # Quando acontece o merge o tamanho da RUN vai aumentando até RUN == tamanho do vetor 
+        # O TAMANHO DA RUN VAI AUMENTANDO EM CADA MERGE ATÉ RUN SER IGUAL AO TAMANHO DO VETOR
+        # Exemplo: há 4 subblocos, a run é x. Depois do merge par a par, ficamos com 2 subblocos e cada um deles tem tamanho de 2x.
+        RUN += RUN  
 
     return lst
 
