@@ -82,7 +82,7 @@ def f_timsort(lst, arg1, arg2):
         di = (RUN + resto)
         df = (2*RUN + resto)
     
-        lst[ iprincipal : fprincipal] = merge( lst[ ei:  ef], lst[ di : df])
+        lst[ iprincipal : fprincipal] = merge( lst[ ei:  ef], lst[ di : df]) # O SUBBLOCO INICIAL TEM TAMANHO DIFERENTE, O MERGE É FEITO FORA DO LOOP
     
         for x in range (df, tam, 2*RUN):
     
@@ -93,7 +93,7 @@ def f_timsort(lst, arg1, arg2):
             di = ef
             df = fprincipal
     
-            lst[iprincipal :  fprincipal ] = merge(lst[ei : ef],  lst[ di: df])  # Intercalar sempre o vetor anterior com o próximo vetor.
+            lst[iprincipal :  fprincipal ] = merge(lst[ei : ef],  lst[ di: df]) 
         
         # O TAMANHO DA RUN VAI AUMENTANDO EM CADA MERGE ATÉ RUN SER IGUAL AO TAMANHO DO VETOR
         # Exemplo: há 4 subblocos, a run é x. Depois do merge par a par, ficamos com 2 subblocos e cada um deles tem tamanho de 2x.
