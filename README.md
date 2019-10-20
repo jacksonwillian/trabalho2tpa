@@ -9,7 +9,7 @@ Trabalho 2 TPA - Algoritmo de ordenação desenvolvido em Python Versão 3
 
 #### Argumentos
 
- - `id_funcao_ordenacao` pode ser um desses 'selectsort', 'quicksort', 'heapsort', 'insertsort';
+ - `id_funcao_ordenacao` pode ser um desses 'selectsort', 'quicksort', 'heapsort', 'insertsort','mergesort' ,'introsort', 'timsort';
 
  - `id_funcao_comparacao` pode ser um desses: ~~'compara_inteiro'~~, 'compara_texto', ~~'compara_data'~~;
 
@@ -24,5 +24,5 @@ Trabalho 2 TPA - Algoritmo de ordenação desenvolvido em Python Versão 3
 - quicksort.py
 - selectsort.py
 - margesort.py
-- introsort
-- timsort
+- introsort.py
+- timsort.py
