@@ -1,4 +1,4 @@
-# RUN = Subvetor que compõe o vetor de entrada
+# RUN = Subblocos que compõe o vetor de entrada
 
 # DECLARACAO DAS VARIAVEIS GLOBAIS
 f_comparacao = None
@@ -60,7 +60,7 @@ def f_timsort(lst, arg1, arg2):
     
     resto = tam % RUN  # CALCULA O RESTO
     
-    # ORDENACAO DOS SUBVETORES
+    # ORDENACAO DOS SUBBLOCOS
     # SE O TAMANHO DO VETOR É MENOR QUE A SOMADO DO RUN MAIS O RESTO DA DIVISAO DO TAMANHO DO VETOR PELO RUN,
     # ENTÃO  ORDENA O SUBBLOCO DO TAMANHO DO VETOR
     if(tam <= (RUN + resto)): 
