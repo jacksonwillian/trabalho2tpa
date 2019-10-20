@@ -14,7 +14,7 @@ def introsort_(a,ini, fin, profundidade_max):
     a_insertsort(a[ini:fin])
     return
   if profundidade_max == 0:
-    a_heapsort(a[ini:fin])
+    a_heapsort(a)
     return
     
   pivo = mediana(a,ini,fin,ini+t_vetor//2)
