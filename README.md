@@ -11,7 +11,7 @@ Trabalho 2 TPA - Algoritmo de ordenação desenvolvido em Python Versão 3
 
  - `id_funcao_ordenacao` pode ser um desses 'selectsort', 'quicksort', 'heapsort', 'insertsort','mergesort' ,'introsort', 'timsort';
 
- - `id_funcao_comparacao` pode ser um desses: ~~'compara_inteiro'~~, 'compara_texto', ~~'compara_data'~~;
+ - `id_funcao_comparacao` pode ser um desses: 'compara_texto';
 
  - `arquivo_entrada` é o diretório onde está o arquivo csv desordenado;
 	
@@ -19,8 +19,8 @@ Trabalho 2 TPA - Algoritmo de ordenação desenvolvido em Python Versão 3
 
 ## Algoritmos de Ordenação
 
-- heapsort.py
-- insertsort.py
+- [heapsort.py](docs/CONTRIBUTING.md)
+- [insertsort.py](algoritmo/insertsort.py)
 - quicksort.py
 - selectsort.py
 - margesort.py
