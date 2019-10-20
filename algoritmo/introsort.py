@@ -1,5 +1,3 @@
-from algoritmo import insertsort
-from algoritmo import heapsort
 import math as math_
 
 # DECLARACAO DAS VARIAVEIS GLOBAIS
