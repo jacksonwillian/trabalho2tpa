@@ -24,5 +24,5 @@ Trabalho 2 TPA - Algoritmo de ordenação desenvolvido em Python Versão 3
 - quicksort.py
 - selectsort.py
 - margesort.py
-- <>
+- introsort
 - timsort
