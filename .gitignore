@@ -1,5 +1,6 @@
 # Ignorar a pasta __pycache__
 algoritmo/__pycache__
+util/__pycache__
 __pycache__
 
 # Ignorar todos os arquivos com extensão .csv
