@@ -8,9 +8,12 @@ v_coluna = None
 def introsort_(a,ini, fin, profundidade_max):
 
   t_vetor = fin - ini
-  if t_vetor < 9:
-    a_insertsort(a[ini:fin])
-    return
+  if len(a) <= 10:
+    return a_insertsort(a)
+
+  elif t_vetor <= 9:
+    return a_insertsort(a[ini:fin+1])
+
   if profundidade_max == 0:
     a_heapsort(a)
     return
