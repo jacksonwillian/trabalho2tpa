@@ -23,6 +23,6 @@ Trabalho 2 TPA - Algoritmo de ordenação desenvolvido em Python Versão 3
 - [insertsort.py](algoritmo/insertsort.py)
 - [quicksort.py](algoritmo/quicksort.py)
 - [selectsort.py](algoritmo/selectsort.py)
-- [margesort.py](algoritmo/mergesort.py)
+- [mergesort.py](algoritmo/mergesort.py)
 - [introsort.py](algoritmo/introsort.py)
 - [timsort.py](algoritmo/timsort.py)
