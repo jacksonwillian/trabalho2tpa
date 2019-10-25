@@ -56,9 +56,6 @@ def main(args):
 				# print("Gerando relatorio...".format(args[3]))
 				# RELATAR TEMPO DE EXECUCAO
 				print("\n{} \t {} \t {}\n".format(args[0], tam_lst, (tempo_final - tempo_inicial) ))
-
-				resultado = "{},{},{},{},{},{}".format(args[0], args[2], tam_lst, (tempo_final - tempo_inicial),datetime.now().strftime('%d/%m/%Y %H:%M') ,mgs_execucao.strip()) 
-				print("\nGRAVOU RESULTADO: ", salvaResultado(resultado))
 		else:
 			print("ERRO | id_funcao_ordenacao e/ou id_funcao_comparacao inseridos nao estao corretos.")
 			print("TENTE:\n id_funcao_ordenacao como um desses: {};\n id_funcao_comparacao como um desses: {};".format(str(list(id_f_ordenacao.keys())).strip('[]'), str(list(id_f_comparacao.keys())).strip('[]')))
@@ -66,21 +63,6 @@ def main(args):
 		print("ERRO | Argumentos esperados: id_funcao_ordenacao id_funcao_comparacao arquivo_entrada arquivo_saida")
 		print("TENTE:\n id_funcao_ordenacao como um desses: {};\n id_funcao_comparacao como um desses: {};".format(str(list(id_f_ordenacao.keys())).strip('[]'), str(list(id_f_comparacao.keys())).strip('[]')))
 	return 0
-
-def salvaResultado(linha):
-	
-	nome_arquivo = "resultado.csv"
-	if not os.path.exists('resultado.csv'):
-		linha = "id, nome arquivo, tamanho, tempo, hora e data, feedback\n" + linha
-	try:
-		arq = open(nome_arquivo, "a")
-		arq.write(linha + "\n")
-		arq.close()
-		return True
-	except IOError as e:
-		print ("ERRO | I/O {} ".format(e))
-	else:
-		return False
 
 if __name__ == '__main__':
 	import sys
