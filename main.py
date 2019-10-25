@@ -16,7 +16,7 @@ from datetime import datetime
 import os.path
 # DICIONARIO COM OS NOMES DAS FUNCOES EXISTENTES E O APONTAMENTO PARA AS MESMAS
 id_f_ordenacao = {'insertsort':[insertsort.f_insertsort],'heapsort':[heapsort.f_heapsort],'quicksort':[quicksort.f_quicksort],'selectsort':[selectsort.f_selectsort], 'mergesort':[mergesort.f_mergesort], 'introsort':[introsort.f_introsort], 'timsort':[timsort.f_timsort]}
-id_f_comparacao = {'compara_texto':[comparacao.f_compara_texto], 'compara_inteiro':[comparacao.f_compara_inteiro], 'compara_data':[comparacao.f_compara_data], 'compara_gen_C':[comparacao.f_comp_gen_C],'compara_gen_D':[comparacao.f_comp_gen_D]}
+id_f_comparacao = {'compara_texto':[comparacao.f_compara_texto]}
 
 # FUNCAO DE ORDENAR GENERICA PARA CHAMAR UMA FUNCAO PRINCIPAL
 def f_ordenar( arq_carregado, id_ordenacao, id_comparacao , posicao_coluna):
