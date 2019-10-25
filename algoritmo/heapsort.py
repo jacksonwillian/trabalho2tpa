@@ -2,10 +2,8 @@
 f_comparacao = None
 v_coluna = None
 
-# RETORNA O INDICE DO MAIOR FILHO QUE É MAIOR QUE A RAIZ
-# RETORNA -1 QUANDO NÃO ENCONTRA ESSE FILHO 
 def maxheap(a, i, tam):
-	# CALCULA O INDICE DOS FILHOS
+	
 	maior  = -1
 	
 	if (((2*i) + 1) <= tam) and f_comparacao(a[((2*i) + 1)][v_coluna], a[i][v_coluna] ) == 1: 
